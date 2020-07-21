@@ -3,12 +3,17 @@ package sample;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Affine;
+import javafx.scene.transform.NonInvertibleTransformException;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -17,18 +22,36 @@ public class Controller implements Initializable {
 
     @FXML
     private Canvas canvas;
+    @FXML
+    private Spinner<Integer> spinner1;
+    @FXML
+    private Spinner<Integer> spinner2;
 
     private Affine affine;
 
     private Simulation simulation;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
 
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {/*
+        SpinnerValueFactory<Integer> valueFactory1 = new SpinnerValueFactory.IntegerSpinnerValueFactory(5, 600, 40);
+        spinner1.setValueFactory(valueFactory1);
+
+        SpinnerValueFactory<Integer> valueFactory2 = new SpinnerValueFactory.IntegerSpinnerValueFactory(5, 50, 25);
+        spinner2.setValueFactory(valueFactory2);
+
+
+        affine = new Affine();
+        affine.appendScale(800 / (fieldWidth * 1.0), 600 / (fieldHeight * 1.0));
+
+        simulation = new Simulation(fieldHeight, fieldWidth);
+        simulation.randomFilling(30);*/
     }
 
-    public Controller() {
 
+
+    public Controller() {
         int fieldHeight = 60;
         int fieldWidth = 80;
 
@@ -38,8 +61,10 @@ public class Controller implements Initializable {
         affine.appendScale(800 / (fieldWidth * 1.0), 600 / (fieldHeight * 1.0));
 
         simulation = new Simulation(fieldHeight, fieldWidth);
-
+        simulation.randomFilling(30);
     }
+
+
 
     public void draw() {
         GraphicsContext g = canvas.getGraphicsContext2D();
@@ -70,9 +95,41 @@ public class Controller implements Initializable {
 
     }
 
+
+
+    public void mouseDraw (MouseEvent event)  {
+
+        try {
+            Point2D point2D = affine.inverseTransform(event.getX(), event.getY());
+            int x = (int) point2D.getX();
+            int y = (int) point2D.getY();
+            if (event.isPrimaryButtonDown()) {
+                simulation.setAlive(x, y);
+            } else {
+                simulation.setDead(x, y);
+            }
+            draw();
+        } catch (Exception e) {
+            System.out.println(event.getX() + " : " + event.getY());
+            e.printStackTrace();
+        }
+    }
+
+
+
+    private boolean pause = true;
+
     public void step (ActionEvent event) {
         simulation.step();
         draw();
+    }
+
+    public void start (ActionEvent event) {
+
+    }
+
+    public void stop (ActionEvent event) {
+
     }
 
 }

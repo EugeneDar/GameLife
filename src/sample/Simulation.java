@@ -51,9 +51,15 @@ public class Simulation {
     }
 
     public void setAlive (int x, int y) {
+        if (x < 0 || y < 0 || x >= width || y >= height) {
+            return;
+        }
         matrix[y][x] = 1;
     }
     public void setDead (int x, int y) {
+        if (x < 0 || y < 0 || x >= width || y >= height) {
+            return;
+        }
         matrix[y][x] = 0;
     }
 
@@ -80,5 +86,19 @@ public class Simulation {
         }
 
         matrix = newMatrix;
+    }
+
+    public void randomFilling (int density) {
+        for (int y = 0;y < height;y++) {
+            for (int x = 0;x < width;x++) {
+                int r = (int) (Math.random() * 100);
+                if (density <= r) {
+                    setAlive(x, y);
+                } else {
+                    setDead(x, y);
+                }
+            }
+
+        }
     }
 }
