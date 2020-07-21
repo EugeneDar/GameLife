@@ -9,7 +9,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
-      <Canvas fx:id="canvas" height="600.0" layoutX="200.0" onMouseDragged="#mouseDraw" onMousePressed="#mouseDraw" width="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <Canvas fx:id="canvas" height="600.0" layoutX="200.0" onMouseDragged="#mouseDraw" onMouseMoved="#setCursorPos" onMousePressed="#mouseDraw" width="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <Text layoutX="28.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Resolution">
          <font>
             <Font size="18.0" />
@@ -25,5 +25,10 @@
       <Spinner fx:id="spinner2" layoutX="21.0" layoutY="114.0" prefHeight="2.0" prefWidth="133.0" />
       <Button layoutX="21.0" layoutY="210.0" mnemonicParsing="false" onAction="#stop" prefHeight="31.0" prefWidth="133.0" text="Stop" />
       <Button layoutX="21.0" layoutY="250.0" mnemonicParsing="false" onAction="#step" prefHeight="31.0" prefWidth="133.0" text="Step" />
+      <Text fx:id="cursorPos" layoutX="21.0" layoutY="570.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cursor: (%d, %d)">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>
