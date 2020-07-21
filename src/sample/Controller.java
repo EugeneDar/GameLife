@@ -41,7 +41,7 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {
-            spinner1.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(5, 600,60));
+            spinner1.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(5, 200,60));
             spinner2.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(5, 50,30));
         } catch (Exception e) {
             e.printStackTrace();
@@ -193,6 +193,27 @@ public class Controller implements Initializable {
         // create simulation
         simulation = new Simulation(fieldHeight, fieldWidth);
         simulation.randomFilling(density);
+        draw();
+    }
+
+    public void clear () {
+        // pause AppThread
+        stop();
+
+        // get
+        int density = spinner2.getValue();
+        int fieldHeight = spinner1.getValue();
+        int fieldWidth = fieldHeight * 4 / 3;
+        System.out.println("resolution : " + fieldHeight + " density : " + density);
+
+        affine = new Affine();
+        // height : width = 3 : 4
+        // resolution = height
+        affine.appendScale(800 / (fieldWidth * 1.0), 600 / (fieldHeight * 1.0));
+
+        // create simulation
+        simulation = new Simulation(fieldHeight, fieldWidth);
+        simulation.clear();
         draw();
     }
 

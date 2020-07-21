@@ -25,11 +25,12 @@
       <Spinner fx:id="spinner2" layoutX="21.0" layoutY="114.0" prefHeight="2.0" prefWidth="133.0" />
       <Button layoutX="21.0" layoutY="210.0" mnemonicParsing="false" onAction="#stop" prefHeight="31.0" prefWidth="133.0" text="Stop" />
       <Button layoutX="21.0" layoutY="250.0" mnemonicParsing="false" onAction="#step" prefHeight="31.0" prefWidth="133.0" text="Step" />
-      <Text fx:id="cursorPos" layoutX="21.0" layoutY="570.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cursor: (%d, %d)">
+      <Text fx:id="cursorPos" layoutX="21.0" layoutY="570.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cursor: ">
          <font>
             <Font size="18.0" />
          </font>
       </Text>
       <Button layoutX="21.0" layoutY="291.0" mnemonicParsing="false" onAction="#reset" prefHeight="31.0" prefWidth="133.0" text="Reset" />
+      <Button layoutX="20.0" layoutY="332.0" mnemonicParsing="false" onAction="#clear" prefHeight="31.0" prefWidth="133.0" text="Clear" />
    </children>
 </AnchorPane>
