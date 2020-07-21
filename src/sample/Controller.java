@@ -55,10 +55,10 @@ public class Controller implements Initializable {
         int fieldHeight = 60;
         int fieldWidth = 80;
 
-        canvas = new Canvas(600, 800);
+        canvas = new Canvas(800, 1300);
 
         affine = new Affine();
-        affine.appendScale(800 / (fieldWidth * 1.0), 600 / (fieldHeight * 1.0));
+        affine.appendScale(1300 / (fieldWidth * 1.0), 800 / (fieldHeight * 1.0));
 
         simulation = new Simulation(fieldHeight, fieldWidth);
         simulation.randomFilling(30);
@@ -74,7 +74,7 @@ public class Controller implements Initializable {
 
         // fill all Rectangle
         g.setFill(Color.LIGHTGRAY);
-        g.fillRect(0, 0, 600, 800);
+        g.fillRect(0, 0, 800, 1300);
 
         // choose color
         g.setFill(Color.BLUE);
@@ -188,7 +188,7 @@ public class Controller implements Initializable {
         affine = new Affine();
         // height : width = 3 : 4
         // resolution = height
-        affine.appendScale(800 / (fieldWidth * 1.0), 600 / (fieldHeight * 1.0));
+        affine.appendScale(1300 / (fieldWidth * 1.0), 800 / (fieldHeight * 1.0));
 
         // create simulation
         simulation = new Simulation(fieldHeight, fieldWidth);
@@ -209,7 +209,7 @@ public class Controller implements Initializable {
         affine = new Affine();
         // height : width = 3 : 4
         // resolution = height
-        affine.appendScale(800 / (fieldWidth * 1.0), 600 / (fieldHeight * 1.0));
+        affine.appendScale(1300 / (fieldWidth * 1.0), 800 / (fieldHeight * 1.0));
 
         // create simulation
         simulation = new Simulation(fieldHeight, fieldWidth);
