@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
 public class Controller implements Initializable {
 
     @FXML
-    private Canvas canvas;
+    public Canvas canvas;
     @FXML
     private Spinner<Integer> spinner1;
     @FXML
@@ -32,31 +32,26 @@ public class Controller implements Initializable {
     @FXML
     private Text cursorPos;
 
-    private Affine affine;
+    public Affine affine;
 
-    private Simulation simulation;
+    public Simulation simulation;
 
 
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {/*
-        SpinnerValueFactory<Integer> valueFactory1 = new SpinnerValueFactory.IntegerSpinnerValueFactory(5, 600, 40);
-        spinner1.setValueFactory(valueFactory1);
-
-        SpinnerValueFactory<Integer> valueFactory2 = new SpinnerValueFactory.IntegerSpinnerValueFactory(5, 50, 25);
-        spinner2.setValueFactory(valueFactory2);
-
-
-        affine = new Affine();
-        affine.appendScale(800 / (fieldWidth * 1.0), 600 / (fieldHeight * 1.0));
-
-        simulation = new Simulation(fieldHeight, fieldWidth);
-        simulation.randomFilling(30);*/
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            spinner1.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(5, 600,60));
+            spinner2.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(5, 50,30));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
 
     public Controller() {
+
         int fieldHeight = 60;
         int fieldWidth = 80;
 
@@ -67,19 +62,23 @@ public class Controller implements Initializable {
 
         simulation = new Simulation(fieldHeight, fieldWidth);
         simulation.randomFilling(30);
+        draw();
     }
 
 
 
     public void draw() {
+        // choose Canvas
         GraphicsContext g = canvas.getGraphicsContext2D();
         g.setTransform(affine);
 
+        // fill all Rectangle
         g.setFill(Color.LIGHTGRAY);
         g.fillRect(0, 0, 600, 800);
 
+        // choose color
         g.setFill(Color.BLUE);
-
+        // paint cells
         for (int x = 0; x < this.simulation.width; x++) {
             for (int y = 0; y < this.simulation.height; y++) {
                 if (this.simulation.isAlive(x, y) == 1) {
@@ -88,6 +87,7 @@ public class Controller implements Initializable {
             }
         }
 
+        // paint lines (#)
         g.setStroke(Color.GRAY);
         g.setLineWidth(0.05);
         for (int x = 0; x <= this.simulation.width; x++) {
@@ -115,8 +115,14 @@ public class Controller implements Initializable {
 
 
 
-    public void mouseDraw (MouseEvent event)  {
+    public void mouseDraw (MouseEvent event) throws InterruptedException {
 
+        boolean pauseMode = pause;
+
+        // pause AppThread
+        stop();
+
+        // paint cell
         try {
             Point2D point2D = affine.inverseTransform(event.getX(), event.getY());
             int x = (int) point2D.getX();
@@ -131,28 +137,63 @@ public class Controller implements Initializable {
             System.out.println(event.getX() + " : " + event.getY());
             e.printStackTrace();
         }
+
+        // start AppThread
+        if (!pauseMode) {
+            pause = false;
+            thread = new AppThread(this);
+        }
     }
 
-
-
-    private boolean pause = true;
+    public volatile boolean pause = true;
+    AppThread thread = null;
 
     public void step (ActionEvent event) {
-        simulation.step();
-        draw();
+        if (pause) {
+            simulation.step();
+            draw();
+        }
     }
 
     public void start (ActionEvent event) {
         pause = false;
-
-        Date start = new Date();
-        while (!pause) {
-            step(event);
-        }
+        thread = new AppThread(this);
     }
 
     public void stop (ActionEvent event) {
         pause = true;
+    }
+    public void stop () {
+        try {
+            pause = true;
+            if (thread != null) {
+                thread.join();
+            }
+        } catch (Exception e) {
+            System.out.println("Exception ");
+        }
+    }
+
+    public void reset () throws InterruptedException {
+
+        // pause AppThread
+        stop();
+
+        // get
+        int density = spinner2.getValue();
+        int fieldHeight = spinner1.getValue();
+        int fieldWidth = fieldHeight * 4 / 3;
+        System.out.println("resolution : " + fieldHeight + " density : " + density);
+
+        affine = new Affine();
+        // height : width = 3 : 4
+        // resolution = height
+        affine.appendScale(800 / (fieldWidth * 1.0), 600 / (fieldHeight * 1.0));
+
+        // create simulation
+        simulation = new Simulation(fieldHeight, fieldWidth);
+        simulation.randomFilling(density);
+        draw();
     }
 
 }

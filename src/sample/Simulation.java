@@ -92,7 +92,7 @@ public class Simulation {
         for (int y = 0;y < height;y++) {
             for (int x = 0;x < width;x++) {
                 int r = (int) (Math.random() * 100);
-                if (density <= r) {
+                if (density > r) {
                     setAlive(x, y);
                 } else {
                     setDead(x, y);

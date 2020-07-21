@@ -30,5 +30,6 @@
             <Font size="18.0" />
          </font>
       </Text>
+      <Button layoutX="21.0" layoutY="291.0" mnemonicParsing="false" onAction="#reset" prefHeight="31.0" prefWidth="133.0" text="Reset" />
    </children>
 </AnchorPane>
